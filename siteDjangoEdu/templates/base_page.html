@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="какое то описание">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block site-page-title%} {% endblock site-page-title%}</title>
+        <!-- load static -->
+        {% load static %}
+        <!-- CSS-->
+        <link rel="stylesheet" href=""> 
+    </head>
+    <body>
+        <div class="container">
+            <header class="border-bottom">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <div class="fs-2 mb-3">
+                        <img src="{% static 'calculator.svg' %}" alt="Проект про математику" width="32" height="32"/>
+                        <span>Проект про математику</span>
+                    </div>
+                </a>
+            </header>
+            <div class="p-5 mb-4 bg-light rounded-3" id="title-box">
+                <div class="container-fluid py-5">
+                    <h1 class="display-1 fw-bold">{% block page-title %}{% endblock %}</h1>
+                    <p class="col-md-8 fs-4">{% block page-lead %}{% endblock %}</p>
+                </div>
+            </div>
+            {% block content %}{% endblock %}
+            <footer class="footer pt-3 mt-4 text-muted border-top">© 2023</footer>
+        
+        </div>
+
+        <script src="" async defer></script>
+    </body>
+</html>
