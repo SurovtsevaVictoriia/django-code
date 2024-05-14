@@ -13,6 +13,10 @@ class Questions(models.Model):
     def __str__(self):
         return f"{self.question_id}, {self.question}, {self.answer}, {self.theme_id}"
 
+    def get_as_dict(self):
+        return {'question_id': self.question_id, 'question': self.question,
+                'answer': self.answer, 'theme_id': self.theme_id}
+
 
 class Themes(models.Model):
     theme_id = models.AutoField(primary_key=True)

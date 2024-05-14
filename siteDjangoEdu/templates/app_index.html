@@ -2,6 +2,9 @@
 
 {% extends "base_page.html" %}
 
+
+
+
 {% block page-title %}
     app Индекс
 {% endblock page-title %}
@@ -15,11 +18,106 @@
 {% endblock page-lead %}
 
 {% block content %}
-    <div>
-        <a href = "/appDjangoEdu/page1">1</a>
+
+
+
+<h2>Tree View</h2>
+<p>A tree view represents a hierarchical view of information, where each item can have a number of subitems.</p>
+<p>Click on the arrow(s) to open or close the tree branches.</p>
+
+<form><ul id="myUL">
+    <li><input type="checkbox"><span class="caret">Beverages</span>
+      <ul class="nested">
+        <li><input type="checkbox">Water</li>
+        <li><input type="checkbox">Coffee</li>
+        <li><input type="checkbox"><span class="caret">Tea</span>
+          <ul class="nested">
+            <li><input type="checkbox">Black Tea</li>
+            <li><input type="checkbox">White Tea</li>
+            <li><input type="checkbox"><span class="caret">Green Tea</span>
+              <ul class="nested">
+                <li><input type="checkbox">Sencha</li>
+                <li><input type="checkbox">Gyokuro</li>
+                <li><input type="checkbox">Matcha</li>
+                <li><input type="checkbox">Pi Lo Chun</li>
+              </ul>
+            </li>
+          </ul>
+        </li>  
+        <li><input type="checkbox"><span class="caret">Tea</span>
+            <ul class="nested">
+              <li><input type="checkbox">Black Tea</li>
+              <li><input type="checkbox">White Tea</li>
+              <li><input type="checkbox"><span class="caret">Green Tea</span>
+                <ul class="nested">
+                  <li><input type="checkbox">Sencha</li>
+                  <li><input type="checkbox">Gyokuro</li>
+                  <li><input type="checkbox">Matcha</li>
+                  <li><input type="checkbox">Pi Lo Chun</li>
+                </ul>
+              </li>
+            </ul>
+          </li> 
+      </ul>
+    </li>
+  </ul>
+  </form>
+
+  <div class="row justify-content-center align-items-center">
+                
+    <div
+        class="col-2  text-center border justify-content-center align-items-center"
+    >
+    <a
+    name=""
+    id=""
+    class="btn btn-primary btn-sm"
+    href="/appDjangoEdu/take_test"
+    role="button"
+    >Пройти тест</a>
+
+    <a
+    name=""
+    id=""
+    class="btn btn-secondary btn-sm"
+    href="/appDjangoEdu/add_question"
+    role="button"
+    >Добавить вопрос</a>
+        
     </div>
-    <div>
-        <a href = "/appDjangoEdu/page2">2</a>
-    </div>
+</div>
+
+<script>
+    var toggler = document.getElementsByClassName("caret");
+    var i;
+    for (i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function() {
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("caret-down");
+        });
+
+        var self_checkbox = toggler[i].parentElement.querySelector("input[type = checkbox]")
+        self_checkbox.addEventListener("click", function() {
+            {% comment %} var child_checkboxes =this.parentElement.querySelectorAll('.nested > li > input[type = checkbox]'); {% endcomment %}
+            var child_lis = this.parentElement.querySelectorAll('.nested > li ');
+            var j = 0;
+            var len = child_lis.length;
+            {% comment %} console.log(len, this.checked, child_lis[0].firstElementChild); {% endcomment %}
+            
+            for(j = 0; j < len; j++) {child_lis[j].firstElementChild.checked = this.checked};
+        });        
+    }
+</script>
+
+
+    
+
+
+    
+
+  
+  
+    
+    
 {% endblock content %}
 

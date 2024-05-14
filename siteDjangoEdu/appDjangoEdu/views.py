@@ -2,21 +2,26 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 
-def index(request):
+def app_index(request):
+    """Contains theme selector, rshould contain a link that redirects to either
+      to "Пройти тест" page or "Добавить вопрос" form
+    """
+
     return render(request, 'app_index.html')
     # return HttpResponse("Hello, world. You're at the polls index.")
 
-def page1(request):
+
+def take_test(request):
     context = {
         'value1': 1,
         'value2': 2
     }
-    return render(request, 'page1.html', context=context)
+    return render(request, 'take_test.html', context=context)
 
 
-def page2(request):
+def add_question(request):
     context = {
         'value1': 3,
         'value2': 4
     }
-    return render(request, 'page2.html', context=context)
+    return render(request, 'add_question.html', context=context)
