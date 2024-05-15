@@ -14,8 +14,8 @@ class Questions(models.Model):
         return f"{self.question_id}, {self.question}, {self.answer}, {self.theme_id}"
 
     def get_as_dict(self):
-        return {'question_id': self.question_id, 'question': self.question,
-                'answer': self.answer, 'theme_id': self.theme_id}
+        return {"question_id": self.question_id, "question": self.question,
+                "answer": self.answer, "theme_id": self.theme_id}
 
 
 class Themes(models.Model):
@@ -30,4 +30,4 @@ class Themes(models.Model):
         return f"{self.theme_id}, {self.name}, {self.parent_id}"
 
     def get_as_dict(self):
-        return {'theme_id': self.theme_id, 'name': self.name, 'parent_id': self.parent_id}
+        return {"theme_id": self.theme_id, "name": self.name, "parent_id": self.parent_id}

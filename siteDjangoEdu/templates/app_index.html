@@ -20,6 +20,14 @@
 {% block content %}
 
 
+<div>
+    {{theme_tree}}
+</div>
+
+
+
+<ul></ul>
+
 
 <h2>Tree View</h2>
 <p>A tree view represents a hierarchical view of information, where each item can have a number of subitems.</p>
@@ -86,6 +94,55 @@
         
     </div>
 </div>
+
+<script>
+    function createList(parent, array){
+      
+      console.log('in createList', array);
+      array.forEach(o => {
+        console.log('o:', o)
+        var li = document.createElement("li"),
+            ul;
+
+        li.textContent = o.theme.name;
+        parent.appendChild(li);
+        if (o.nested) {
+            ul = document.createElement("ul");
+            li.appendChild(ul);
+            createList(ul, o.nested);
+        }
+    });
+    }
+
+  var str = `{{theme_tree}}`;
+  
+  object = JSON.parse(str.replace(/&quot;/g,'"'));
+  console.log(object);
+  createList(document.querySelector("ul"), [object]);
+</script>
+
+
+{% comment %} <script type="application/json"> {% endcomment %}
+<script>
+  function createList2(parent, array) {
+    array.forEach(function (o) {
+        var li = document.createElement("li"),
+            ul;
+
+        li.textContent = o.name;
+        parent.appendChild(li);
+        if (o.nest) {
+            ul = document.createElement("ul");
+            li.appendChild(ul);
+            createList2(ul, o.nest);
+        }
+    });
+}
+
+var  object = { name: "name1", nest: [{ name: "name2", nest: [{ name: "name3" }, { name: "name4", nest: [{ name: "name5", nest: [{ name: "name6" }] }, { name: "name7" }, { name: "name8" }] }] }] }
+console.log(object);
+createList2(document.querySelector("ul"), [object]);
+</script>
 
 <script>
     var toggler = document.getElementsByClassName("caret");
