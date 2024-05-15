@@ -28,3 +28,6 @@ class Themes(models.Model):
 
     def __str__(self):
         return f"{self.theme_id}, {self.name}, {self.parent_id}"
+
+    def get_as_dict(self):
+        return {'theme_id': self.theme_id, 'name': self.name, 'parent_id': self.parent_id}

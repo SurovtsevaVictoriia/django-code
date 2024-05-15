@@ -49,7 +49,7 @@ def get_subthemes(theme_id: int) -> list[int]:
     return roots
 
 
-def get_themes_as_tree() -> list:
+def get_themes_ids_as_tree() -> list:
     """returns entire tree of theme ids as nested list
 
     Returns:
@@ -79,6 +79,45 @@ def get_themes_as_tree() -> list:
                     for child_theme in child_themes:
                         theme_ids[idx].append([child_theme.theme_id])
                     get_children(theme_ids[idx][1:], i)
+                    # children_ids.append(child_theme.theme_id)
+
+        except Exception as e:
+            print(e.args, "get_children not getting children")
+
+    get_children(roots, k)
+    return roots
+
+
+def get_theme_dicts_as_tree() -> list[list[dict]]:
+    """
+    returns entire tree of themes as nested list of dicts
+    dict:{'theme_id': ..., 'name': ..., 'parent_id': ...}
+    Returns:
+        list[list[dict]]: nested list of dicts
+    """
+    roots = []
+    k = 0
+
+    def get_children(theme_dicts: list, i):
+        i = i+1
+
+        print(i, 'roots', roots, 'theme_ids', theme_dicts)
+        try:
+            if len(theme_dicts) == 0 and i == 1:
+                print('in int if', theme_dicts)
+                child_themes = Themes.objects.filter(parent_id=0)
+                for child_theme in child_themes:
+                    theme_dicts.append([child_theme.get_as_dict()])
+                get_children(theme_dicts, i)
+                # children_ids.append([child_theme.theme_id])
+            else:
+                for idx, theme_dict in enumerate(theme_dicts):
+                    print('in list if, idx = ', idx, 'theme_dict ', theme_dict)
+                    child_themes = Themes.objects.filter(
+                        parent_id=theme_dicts[idx][0]['theme_id'])
+                    for child_theme in child_themes:
+                        theme_dicts[idx].append([child_theme.get_as_dict()])
+                    get_children(theme_dicts[idx][1:], i)
                     # children_ids.append(child_theme.theme_id)
 
         except Exception as e:
