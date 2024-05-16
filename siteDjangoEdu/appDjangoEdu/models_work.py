@@ -102,6 +102,12 @@ def get_theme_dicts_as_json_string():
     json_data = json.dumps(roots, indent = 2, ensure_ascii=False,)
     return json_data
 
+def get_all_theme_ids():
+    ids = []
+    themes = Themes.objects.all()
+    for theme in themes:
+        ids.append(theme.theme_id)
+    return ids
 
 def get_questions(theme_id: int) -> list[dict]:
     """returns questions on given theme 

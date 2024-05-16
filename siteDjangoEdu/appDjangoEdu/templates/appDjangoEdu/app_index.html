@@ -71,6 +71,9 @@
             span = document.createElement("span");
             
         checkbox.type = "checkbox";
+        checkbox.setAttribute("id", o.theme.theme_id);
+        checkbox.setAttribute("name", o.theme.theme_id);
+        checkbox.setAttribute("value", false);
         span.textContent = o.theme.name;
         span.setAttribute("id", o.theme.theme_id);
         
@@ -97,6 +100,15 @@
 </script>
 
 <script>
+    var checkbox = document.querySelectorAll("input[type = checkbox]");
+    var j;
+    for (j = 0; j < checkbox.length; j++){
+        checkbox[j].addEventListener("change", function(){
+            this.setAttribute("value",  this.checked);
+        });
+    };    
+
+
     var toggler = document.getElementsByClassName("caret");
     var i;
     for (i = 0; i < toggler.length; i++) {
@@ -105,12 +117,15 @@
             this.classList.toggle("caret-down");
         });
 
-        var self_checkbox = toggler[i].parentElement.querySelector("input[type = checkbox]")
+        var self_checkbox = toggler[i].parentElement.querySelector("input[type = checkbox]");
         self_checkbox.addEventListener("click", function() {
             var child_lis = this.parentElement.querySelectorAll('.nested > li ');
             var j = 0;
             var len = child_lis.length;            
-            for(j = 0; j < len; j++) {child_lis[j].firstElementChild.checked = this.checked};
+            for(j = 0; j < len; j++) {
+                child_lis[j].firstElementChild.checked = this.checked;
+                child_lis[j].firstElementChild.setAttribute("value",  this.checked);
+            };
         });        
     }
 </script>
