@@ -1,0 +1,129 @@
+
+
+{% extends "base_page.html" %}
+
+
+
+
+{% block page-title %}
+    app Индекс
+{% endblock page-title %}
+
+{% block site-page-title %}
+    app Индексссс
+{% endblock site-page-title %}
+
+{% block page-lead %}
+    Тут типа индексы какие то
+{% endblock page-lead %}
+
+{% block content %}
+
+
+<div>
+    {{theme_tree}}
+</div>
+
+<h2>Выберите темы</h2>
+<p>Выберите одну или несколько тем чтобы проверить себя по соответствующим вопросам</p>
+<p>Выберите одну тему чтобы добавить вопрос по ней</p>
+
+<form method = "post"> {% csrf_token %}
+
+  <ul id = "myUL"></ul>
+
+<div class="row justify-content-center align-items-center">
+                
+    <div
+        class="col-2  text-center border justify-content-center align-items-center"
+    >
+    
+    <button
+        type="submit"
+        class="btn btn-primary"
+        {% comment %} formaction = "/appDjangoEdu/take_test_submit" {% endcomment %}
+        formaction = "{% url 'appDjangoEdu:take_test_submit'%}"
+    >
+        Пройти викторину
+    </button>
+
+    <button
+        type="submit"
+        class="btn btn-secondary"
+        formaction = "/appDjangoEdu/add_question"
+    >
+        Добавить вопрос
+    </button>
+        
+    </div>
+</div>
+
+</form>
+
+
+<script>
+    function createList(parent, array){
+      
+      array.forEach(o => {
+        var li = document.createElement("li"),
+            ul;
+        var checkbox = document.createElement("input"),
+            span = document.createElement("span");
+            
+        checkbox.type = "checkbox";
+        span.textContent = o.theme.name;
+        span.setAttribute("id", o.theme.theme_id);
+        
+        li.appendChild(checkbox);
+        li.appendChild(span);    
+        parent.appendChild(li);
+        
+        if (o.nested.length != 0) {
+            span.className += "caret"; 
+            ul = document.createElement("ul");
+            ul.className+= "nested";
+
+            li.appendChild(ul);
+            createList(ul, o.nested);
+        }
+      });
+    }
+
+  var str = `{{theme_tree}}`;
+  
+  object = JSON.parse(str.replace(/&quot;/g,'"'));
+  console.log(object);
+  createList(document.querySelector("ul"), [object]);
+</script>
+
+<script>
+    var toggler = document.getElementsByClassName("caret");
+    var i;
+    for (i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function() {
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("caret-down");
+        });
+
+        var self_checkbox = toggler[i].parentElement.querySelector("input[type = checkbox]")
+        self_checkbox.addEventListener("click", function() {
+            var child_lis = this.parentElement.querySelectorAll('.nested > li ');
+            var j = 0;
+            var len = child_lis.length;            
+            for(j = 0; j < len; j++) {child_lis[j].firstElementChild.checked = this.checked};
+        });        
+    }
+</script>
+
+
+    
+
+
+    
+
+  
+  
+    
+    
+{% endblock content %}
+

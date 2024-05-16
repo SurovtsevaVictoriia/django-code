@@ -60,16 +60,17 @@ def get_theme_dicts_as_json_string():
     Returns:
         list[list[dict]]: nested list of dicts
     """
-    roots = {"theme": {'name': 'Все темы'},
+    roots = {"theme": {'name': 'Все темы', 
+                       'theme_id': 0},
             "nested": []}
     k = 0
 
     def get_children(theme_dicts: list[dict], i):
         i = i + 1
-        print(i, 'roots', roots, '\n theme_dicts', theme_dicts)
+        # print(i, 'roots', roots, '\n theme_dicts', theme_dicts)
         try:
             if i == 1:
-                print('---\nin int if', theme_dicts)
+                # print('---\nin int if', theme_dicts)
                 child_themes = Themes.objects.filter(parent_id=0)
                 for child_theme in child_themes:
                     theme_dicts['nested'].append({
@@ -80,8 +81,8 @@ def get_theme_dicts_as_json_string():
 
             else:
                 try:
-                    for idx, theme_dict in enumerate(theme_dicts):
-                        print('---\nin list if, idx = ', idx, '\n theme_dict ', theme_dict)
+                    for theme_dict in theme_dicts:
+                        # print('---\nin list if, idx = ', idx, '\n theme_dict ', theme_dict)
                         child_themes = Themes.objects.filter(
                             parent_id=theme_dict['theme']['theme_id'])
                         for child_theme in child_themes:
