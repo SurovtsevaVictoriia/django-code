@@ -20,45 +20,48 @@
 {% block content %}
 
 
-<div>
-    {{theme_tree}}
-</div>
-
 <h2>Выберите темы</h2>
 <p>Выберите одну или несколько тем чтобы проверить себя по соответствующим вопросам</p>
 <p>Выберите одну тему чтобы добавить вопрос по ней</p>
 
-<form method = "post"> {% csrf_token %}
 
-  <ul id = "myUL"></ul>
-
-<div class="row justify-content-center align-items-center">
-                
+<form name = "frmTree" method = "post"> {% csrf_token %}
     <div
-        class="col-2  text-center border justify-content-center align-items-center"
+        class="row justify-content-center align-items-center my-3"
     >
+        <div class="col-10"><ul id = "myUL"></ul></div>
+        
+    </div>
+
+    <span id="error" aria-live="polite"> There is an error </span>
+
+    
+
+</form>
+
+<div class="row justify-content-center align-items-center g-2">
+                    
     
     <button
-        type="submit"
-        class="btn btn-primary"
-        {% comment %} formaction = "/appDjangoEdu/take_test_submit" {% endcomment %}
-        formaction = "{% url 'appDjangoEdu:take_test_submit'%}"
+        name = "take_test_submit"
+        class="btn btn-primary col"
+        onclick = "return checkform(name)"
+        {% comment %} onclick = "return checkform(take_test_submit)" {% endcomment %}
     >
         Пройти викторину
     </button>
 
     <button
-        type="submit"
-        class="btn btn-secondary"
-        formaction = "/appDjangoEdu/add_question"
+        name = "add_question_submit"
+        class="btn btn-secondary col"
+        onclick = "return checkform(name)"
+        {% comment %} onclick = "return checkform(add_question_submit)" {% endcomment %}
     >
         Добавить вопрос
     </button>
         
-    </div>
 </div>
 
-</form>
 
 
 <script>
@@ -72,7 +75,7 @@
             
         checkbox.type = "checkbox";
         checkbox.setAttribute("id", o.theme.theme_id);
-        checkbox.setAttribute("name", o.theme.theme_id);
+        checkbox.setAttribute("name", 'theme_' + o.theme.theme_id.toString());
         checkbox.setAttribute("value", false);
         span.textContent = o.theme.name;
         span.setAttribute("id", o.theme.theme_id);
@@ -82,9 +85,9 @@
         parent.appendChild(li);
         
         if (o.nested.length != 0) {
-            span.className += "caret"; 
+            span.className += "caret caret-down"; 
             ul = document.createElement("ul");
-            ul.className+= "nested";
+            ul.className+= "nested active";
 
             li.appendChild(ul);
             createList(ul, o.nested);
@@ -130,6 +133,53 @@
     }
 </script>
 
+<script>
+    function checkform(obj){
+        console.log(obj)
+        
+        var checkbox = document.frmTree.querySelectorAll("input[type = checkbox]");
+        var n = 0, 
+        j = 0;
+
+        for (j = 0; j < checkbox.length; j++){
+            var value = checkbox[j].getAttribute("value");
+            if(value === 'true'){
+                console.log('value', value);
+                n++;
+            }
+        }
+
+        console.log(n);
+
+        var treeError = document.getElementById("error");
+        console.log('treeError', treeError);
+
+        if (obj=== 'take_test_submit'){
+            if (n === 0){
+                treeError.textContent = "Выберите тему";
+            } else{
+                console.log('in else')
+                document.frmTree.action = "{% url 'appDjangoEdu:take_test_submit'%}";
+                document.frmTree.submit();
+            }
+        } 
+        
+        else if (obj === 'add_question_submit'){
+            if (n === 0 || n > 1){
+                treeError.textContent = "Выберите одну тему";
+            } else {
+                console.log('in else')
+                document.frmTree.action = "{% url 'appDjangoEdu:add_question_submit'%}";
+                document.frmTree.submit();
+            } 
+            
+        } 
+      
+
+
+        
+    }
+</script>
 
     
 

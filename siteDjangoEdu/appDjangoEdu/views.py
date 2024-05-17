@@ -28,7 +28,7 @@ def take_test_submit(request):
         sIdx = ''
         for idx in get_all_theme_ids():    
             try:
-                if(request.POST[str(idx)]):
+                if(request.POST['theme_'+str(idx)]):
                     if sIdx == '':
                         sIdx += str(idx)
                     else:

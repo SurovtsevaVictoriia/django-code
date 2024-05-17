@@ -15,60 +15,69 @@
 {% block content %}
 
     {{questions.length}}
+   
+    
+    <div class = "row justify-content-center align-items-center g-2" >
+        <div class="col-11">
+            {% for item in questions %}
+            <div class="card my-1">
+                <div class="card-header bg-primary text-white">тема: {{item.theme_name}} </div>
+                <div class="card-body bg-light">
+                    <h5 class="card-title">Вопрос № {{forloop.counter}}</h5>
+                    <p class="card-text">{{item.question}}</p>
+                    <div style="height: 50px">
+                        
+                        <div
+                            class="row justify-content-center align-items-center g-2"
+                        >
+                            <div class="col-3">
+                                <button id = "btn-collapse" class="btn btn-secondary collapsed" type="button" 
+                                data-mdb-collapse-init="" data-mdb-ripple-init="" data-mdb-target="#collapseWidthExample" 
+                                aria-expanded="false" aria-controls= "{{forloop.counter}}" style="">
+                                    Показать ответ:
+                                </button>
+                            </div>
 
-    <div>
-    {% comment %} {% for question_id, question, answer, theme_id, theme_name in questions %} {% endcomment %}
-    {% for item in questions %}
-    <div class="card my-1">
-        <div class="card-header" style = "background-color: #6c757d;">тема: {{item.theme_name}} </div>
-        <div class="card-body">
-          <h5 class="card-title">Вопрос № {{forloop.counter}}</h5>
-          <p class="card-text">{{item.question}}</p>
-
-          <div class = " " style="height: 50px">
-            
-            <div
-                class="row justify-content-center align-items-center g-2"
-            >
-                <div class="col-3">
-                    <button id = "btn-collapse" class="btn btn-primary collapsed" type="button" 
-                    data-mdb-collapse-init="" data-mdb-ripple-init="" data-mdb-target="#collapseWidthExample" 
-                    aria-expanded="false" aria-controls= "{{forloop.counter}}" style="">
-                        Показать ответ:
-                    </button>
-                </div>
-                <div class="col text-left">
-                    <div class="collapse-horizontal collapse" id="{{forloop.counter}}" style="">
-                        <div style="width: 300px;">
-                            {{item.answer}}
+                            <div class="col text-left">
+                                <div class="collapse-horizontal collapse" id="{{forloop.counter}}" style="">
+                                    <div style="width: 300px;">
+                                        {{item.answer}}
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
+                        
                     </div>
                 </div>
-                
             </div>
-            
-           
-
-            
-
-          </div>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
+
+    <div
+        class="row justify-content-center align-items-center g-2"
+    >
+        <a
+        name=""
+        id=""
+        class="btn btn-primary col"
+        href="/appDjangoEdu"
+        role="button"
+        >Пройти еще тест</a>
+
+        <a
+        name=""
+        id=""
+        class="btn btn-secondary col"
+        href="/"
+        role="button"
+        >Вернуться на главную</a>
+
     </div>
-
     
-    
-
-    {% comment %} <script type = "text/javascript" src = "mdb.umd.min.js"></script> {% endcomment %}
     <script>
-        {% comment %} var collapse_button = document.getElementById("btn-collapse");
-        collapse_button.addEventListener("click", function(){
-            this.classList.toggle("collapsed");
-            var controlled = document.getElementById(this.getAttribute("aria-controls"));
-            controlled.classList.toggle("show");
-        }); {% endcomment %}
-
+        
         var collapse_buttons = document.getElementsByClassName("collapsed");
         var i;
         for (i = 0; i < collapse_buttons.length; i++){
@@ -77,8 +86,7 @@
                 var controlled = document.getElementById(this.getAttribute("aria-controls"));
                 controlled.classList.toggle("show");
             });
-        }
-        
+        }        
 
     </script>  
     
