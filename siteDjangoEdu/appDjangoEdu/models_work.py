@@ -119,6 +119,8 @@ def get_questions(theme_id: int) -> list[dict]:
     questions = []
     theme_qs = Questions.objects.filter(theme_id=theme_id)
     for theme_q in theme_qs:
-        questions.append(theme_q.get_as_dict())
+        theme_dict = theme_q.get_as_dict()
+        theme_dict["theme_name"] = Themes.objects.get(theme_id = theme_id).name
+        questions.append(theme_dict)
 
     return questions

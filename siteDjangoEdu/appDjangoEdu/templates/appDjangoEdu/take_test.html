@@ -13,5 +13,73 @@
 {% endblock page-lead %}
 
 {% block content %}
-    {{questions}}
+
+    {{questions.length}}
+
+    <div>
+    {% comment %} {% for question_id, question, answer, theme_id, theme_name in questions %} {% endcomment %}
+    {% for item in questions %}
+    <div class="card my-1">
+        <div class="card-header" style = "background-color: #6c757d;">тема: {{item.theme_name}} </div>
+        <div class="card-body">
+          <h5 class="card-title">Вопрос № {{forloop.counter}}</h5>
+          <p class="card-text">{{item.question}}</p>
+
+          <div class = " " style="height: 50px">
+            
+            <div
+                class="row justify-content-center align-items-center g-2"
+            >
+                <div class="col-3">
+                    <button id = "btn-collapse" class="btn btn-primary collapsed" type="button" 
+                    data-mdb-collapse-init="" data-mdb-ripple-init="" data-mdb-target="#collapseWidthExample" 
+                    aria-expanded="false" aria-controls= "{{forloop.counter}}" style="">
+                        Показать ответ:
+                    </button>
+                </div>
+                <div class="col text-left">
+                    <div class="collapse-horizontal collapse" id="{{forloop.counter}}" style="">
+                        <div style="width: 300px;">
+                            {{item.answer}}
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+           
+
+            
+
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+
+    
+    
+
+    {% comment %} <script type = "text/javascript" src = "mdb.umd.min.js"></script> {% endcomment %}
+    <script>
+        {% comment %} var collapse_button = document.getElementById("btn-collapse");
+        collapse_button.addEventListener("click", function(){
+            this.classList.toggle("collapsed");
+            var controlled = document.getElementById(this.getAttribute("aria-controls"));
+            controlled.classList.toggle("show");
+        }); {% endcomment %}
+
+        var collapse_buttons = document.getElementsByClassName("collapsed");
+        var i;
+        for (i = 0; i < collapse_buttons.length; i++){
+            collapse_buttons[i].addEventListener("click", function(){
+                this.classList.toggle("collapsed");
+                var controlled = document.getElementById(this.getAttribute("aria-controls"));
+                controlled.classList.toggle("show");
+            });
+        }
+        
+
+    </script>  
+    
 {% endblock content %}

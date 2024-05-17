@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse,HttpResponseRedirect,  Http404
 from .models_work import *
 from django.urls import reverse
+import random
 
 
 def app_index(request):
@@ -45,6 +46,7 @@ def take_test(request, s):
         for theme_idx in theme_idxs:
             theme_questions = get_questions(theme_idx)
             test_questions['questions'].extend(theme_questions)
+        random.shuffle(test_questions['questions'])
     except Exception as e:
         print(e.args)
     return render(request, 'appDjangoEdu/take_test.html', context=test_questions)
