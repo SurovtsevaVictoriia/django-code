@@ -32,6 +32,7 @@ def get_theme_dicts_as_tree() -> list[list[dict]]:
                     # print('in list if, idx = ', idx, 'theme_dict ', theme_dict)
                     child_themes = Themes.objects.filter(
                         parent_id=theme_dicts[idx][0]['theme_id'])
+
                     for child_theme in child_themes:
                         theme_dicts[idx].append([child_theme.get_as_dict()])
                     get_children(theme_dicts[idx][1:], i)
@@ -50,7 +51,7 @@ def get_theme_dicts_as_json_string():
 
     {"root":
         [
-            {'theme' :{'theme_id': ..., 'name': ..., 'parent_id': ...}, 
+            {'theme' :{'theme_id': ..., 'name': ..., 'parent_id': ..., 'q_count': ...}, 
              'nested':[{'theme': ... , 'nested': ... }, 
                        {'theme': ... , 'nested': ... }]
             }, 
@@ -60,9 +61,16 @@ def get_theme_dicts_as_json_string():
     Returns:
         list[list[dict]]: nested list of dicts
     """
-    roots = {"theme": {'name': 'Все темы', 
-                       'theme_id': 0},
-            "nested": []}
+
+
+    roots = {'nested': []}
+    all_theme = Themes.objects.filter(theme_id=0)[0]
+    t_dict = all_theme.get_as_dict()
+    q_count = all_theme.get_q_count()
+    t_dict['q_count'] = q_count
+    t_dict['parent_id'] = -1
+
+    roots['theme'] = t_dict
     k = 0
 
     def get_children(theme_dicts: list[dict], i):
@@ -73,8 +81,12 @@ def get_theme_dicts_as_json_string():
                 # print('---\nin int if', theme_dicts)
                 child_themes = Themes.objects.filter(parent_id=0)
                 for child_theme in child_themes:
+                    q_count = child_theme.get_q_count()
+                    t_dict = child_theme.get_as_dict()
+                    t_dict['q_count'] = q_count
+
                     theme_dicts['nested'].append({
-                        'theme': child_theme.get_as_dict(),
+                        'theme': t_dict,
                         'nested': []
                     })
                 get_children(theme_dicts["nested"], i)
@@ -85,22 +97,28 @@ def get_theme_dicts_as_json_string():
                         # print('---\nin list if, idx = ', idx, '\n theme_dict ', theme_dict)
                         child_themes = Themes.objects.filter(
                             parent_id=theme_dict['theme']['theme_id'])
+
                         for child_theme in child_themes:
+                            q_count = child_theme.get_q_count()
+                            t_dict = child_theme.get_as_dict()
+                            t_dict['q_count'] = q_count
+
                             theme_dict['nested'].append({
-                                'theme': child_theme.get_as_dict(),
+                                'theme': t_dict,
                                 'nested': []
                             })
+
                         get_children(theme_dict['nested'], i)
                 except Exception as e:
                     print(e.args, "error in list if")
-
 
         except Exception as e:
             print(e.args, "get_children not getting children")
 
     get_children(roots, k)
-    json_data = json.dumps(roots, indent = 2, ensure_ascii=False,)
+    json_data = json.dumps(roots, indent=2, ensure_ascii=False,)
     return json_data
+
 
 def get_all_theme_ids():
     ids = []
@@ -108,6 +126,7 @@ def get_all_theme_ids():
     for theme in themes:
         ids.append(theme.theme_id)
     return ids
+
 
 def get_questions(theme_id: int) -> list[dict]:
     """returns questions on given theme 
@@ -120,7 +139,7 @@ def get_questions(theme_id: int) -> list[dict]:
     theme_qs = Questions.objects.filter(theme_id=theme_id)
     for theme_q in theme_qs:
         theme_dict = theme_q.get_as_dict()
-        theme_dict["theme_name"] = Themes.objects.get(theme_id = theme_id).name
+        theme_dict["theme_name"] = Themes.objects.get(theme_id=theme_id).name
         questions.append(theme_dict)
 
     return questions

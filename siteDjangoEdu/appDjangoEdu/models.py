@@ -31,3 +31,9 @@ class Themes(models.Model):
 
     def get_as_dict(self):
         return {"theme_id": self.theme_id, "name": self.name, "parent_id": self.parent_id}
+    
+    def get_q_count(self):
+        questions = Questions.objects.filter(theme_id = self.theme_id)
+        count = len(questions)
+        return count
+
