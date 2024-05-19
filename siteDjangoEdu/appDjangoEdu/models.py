@@ -1,7 +1,21 @@
+"""Database tables as classes:
+    class Questions(models.Model)
+    class Themes(models.Model)
+
+"""
 from django.db import models
 
 
 class Questions(models.Model):
+    """
+    Table that contains questions.
+
+    question_id = models.AutoField(primary_key=True)
+    question = models.TextField()
+    answer = models.TextField()
+    theme_id = models.IntegerField()
+
+    """
     question_id = models.AutoField(primary_key=True)
     question = models.TextField()
     answer = models.TextField()
@@ -19,6 +33,13 @@ class Questions(models.Model):
 
 
 class Themes(models.Model):
+    """
+    Table that contains themes
+
+    theme_id = models.AutoField(primary_key=True)
+    name = models.TextField()
+    parent_id = models.IntegerField(blank=True, null=True)
+    """
     theme_id = models.AutoField(primary_key=True)
     name = models.TextField()
     parent_id = models.IntegerField(blank=True, null=True)
@@ -31,18 +52,15 @@ class Themes(models.Model):
 
     def get_as_dict(self):
         return {"theme_id": self.theme_id, "name": self.name, "parent_id": self.parent_id}
-    
+
     def get_q_count(self):
-        questions = Questions.objects.filter(theme_id = self.theme_id)
+        questions = Questions.objects.filter(theme_id=self.theme_id)
         count = len(questions)
         return count
-    
+
     def get_question_dicts(self):
         q_list = []
-        questions = Questions.objects.filter(theme_id = self.theme_id)
+        questions = Questions.objects.filter(theme_id=self.theme_id)
         for question in questions:
             q_list.append(question.get_as_dict())
         return q_list
-
-        
-

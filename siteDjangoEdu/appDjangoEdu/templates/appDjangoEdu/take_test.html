@@ -1,15 +1,23 @@
 {% extends "base_page.html" %}
 
 {% block page-title %}
-    take_test
+    Проверить себя
 {% endblock page-title %}
 
 {% block site-page-title %}
-    take_test
+    Проверить себя
 {% endblock site-page-title %}
 
 {% block page-lead %}
-    take_test
+    Проверьте себя по выбранным темам.
+{% comment %} <ul class="list-group list-group-numbered">
+    {% for item in questions %}
+    <li class="list-group-item">{{item.theme_name}}</li>
+    {% endfor %}
+    
+</ul> {% endcomment %}
+
+
 {% endblock page-lead %}
 
 {% block content %}

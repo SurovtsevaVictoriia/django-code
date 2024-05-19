@@ -1,15 +1,15 @@
 {% extends "base_page.html" %}
 
 {% block page-title %}
-    add_question
+    Добавить вопрос
 {% endblock page-title %}
 
 {% block site-page-title %}
-    add_question
+    Добавить вопрос
 {% endblock site-page-title %}
 
 {% block page-lead %}
-    add_question
+    Добавить вопрос к теме <b>"{{theme.name}}"</b>
 {% endblock page-lead %}
 
 {% block content %}
@@ -18,6 +18,8 @@
     class="row justify-content-center align-items-center g-2"
 >
     <div class="col">
+
+        <div class="text-center"> Список вопросов</div>
         <div
             class="table-responsive"
         >

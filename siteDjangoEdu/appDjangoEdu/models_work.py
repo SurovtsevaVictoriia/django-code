@@ -1,8 +1,8 @@
-from .models import Questions, Themes
-import json
-# import sys
+"""This module connects web application with database
 
-# sys.setrecursionlimit(25)
+"""
+import json
+from .models import Questions, Themes
 
 
 def get_theme_dicts_as_json_string():
@@ -79,14 +79,6 @@ def get_theme_dicts_as_json_string():
     return json_data
 
 
-def get_all_theme_ids():
-    ids = []
-    themes = Themes.objects.all()
-    for theme in themes:
-        ids.append(theme.theme_id)
-    return ids
-
-
 def get_questions(theme_id: int) -> list[dict]:
     """returns questions on given theme 
     Args:
@@ -105,6 +97,14 @@ def get_questions(theme_id: int) -> list[dict]:
 
 
 def get_theme_by_id(idx: int) -> dict:
+    """returns theme as dictionary
+
+    Args:
+        idx (int): index of theme
+
+    Returns:
+        dict: {"theme_id": ..., "name": ..., "parent_id": ...}
+    """
     theme = Themes.objects.get(theme_id=idx)
     theme_dict = theme.get_as_dict()
     return theme_dict
@@ -117,7 +117,7 @@ def write_new_question(theme_id: int, new_question: str, new_answer: str) -> Non
         new_question (str): 
         new_answer (str): 
     """
-    
+
     q = Questions(question=new_question, answer=new_answer, theme_id=theme_id)
     q.save()
     print(q)
