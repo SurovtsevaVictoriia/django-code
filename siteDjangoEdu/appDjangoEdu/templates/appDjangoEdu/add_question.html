@@ -13,6 +13,155 @@
 {% endblock page-lead %}
 
 {% block content %}
+
+<div
+    class="row justify-content-center align-items-center g-2"
+>
+    <div class="col">
+        <div
+            class="table-responsive"
+        >
+            <table
+                class="table table-primary"
+            >
+                <thead>
+                    <tr>
+                        <th scope="col">Вопрос</th>
+                        <th scope="col">Ответ</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {%for item in questions%}
+
+               
+                <tr class="">
+                    <td scope="row">{{item.question}}</td>
+                    <td>{{item.answer}}</td>                    
+                </tr>
+            
+                {% endfor %}
+            
+                </tbody>
+            </table>
+        </div>   
+
+    </div>
+    
+</div>
+
+
+<div
+    class="row justify-content-center align-items-center g-2"
+>
+    <div class="col">
+        <div class="container">
+            <form name = 'frmQuestion' method = 'post'> {% csrf_token %}
+                <div class="mb-3 row">
+                    <label
+                        for="inputQuestion"
+                        class="col-4 col-form-label"
+                        >Вопрос</label
+                    >
+                    <div
+                        class="col-8"
+                    >
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="inputQuestion"
+                            id="inputQuestion"
+                            placeholder="Введите вопрос по теме"
+                            required
+                        />
+                        <div class="invalid-feedback">
+                            Please choose a username.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label
+                        for="inputAnswer"
+                        class="col-4 col-form-label"
+                        >Ответ</label
+                    >
+                    <div
+                        class="col-8"
+                    >
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="inputAnswer"
+                            id="inputAnswer"
+                            placeholder="Введите ответ на вопрос"
+                            required
+                        />
+                        <div class="invalid-feedback">
+                            Please choose a username.
+                        </div>
+
+                    </div>
+                </div>
+
+                <input type = 'hidden' name = 'theme_id' value = {{theme.theme_id}} >
+                <span id="error" aria-live="polite"> </span>
+                
+                <div class="mb-3 row">
+                    <div class="offset-sm-4 col-sm-8">
+                        <button type="submit" class="btn btn-primary" onclick = "return checkform()">
+                            Отправить вопрос
+                        </button>
+                    </div>
+                </div>
+
+
+            </form>
+
+            <div
+            class="row justify-content-center align-items-center g-2"
+        >
+            <a
+            name=""
+            id=""
+            class="btn btn-primary col"
+            href="/appDjangoEdu"
+            role="button"
+            >Пройти тест</a>
+    
+            <a
+            name=""
+            id=""
+            class="btn btn-secondary col"
+            href="/"
+            role="button"
+            >Вернуться на главную</a>
+    
+        </div>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    function checkform(){
+        console.log('send question')
+        var inputQuestion = document.getElementById("inputQuestion");
+        var inputAnswer = document.getElementById("inputAnswer");
+        var treeError = document.getElementById("error");
+        console.log(inputQuestion.value, inputAnswer.value); 
+        if (!inputQuestion.value && !inputAnswer.value){
+            treeError.textContent = "Поля не должны быть пустыми";
+        } else if (!inputQuestion.value){
+            treeError.textContent = "Поле вопроса не должно быть пустым";
+        }
+         else if (!inputAnswer.value){
+            treeError.textContent = "Поле ответа не должно быть пустым";
+        } else {
+            document.frmQuestion.action = "{% url 'appDjangoEdu:add_question_submit'%}";
+            document.frmQuestion.submit(); 
+        }
+    }
+</script>
     
     
 {% endblock content %}

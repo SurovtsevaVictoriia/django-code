@@ -5,46 +5,6 @@ import json
 # sys.setrecursionlimit(25)
 
 
-def get_theme_dicts_as_tree() -> list[list[dict]]:
-    """
-    returns entire tree of themes as nested list of dicts
-    dict:{'theme_id': ..., 'name': ..., 'parent_id': ...}
-    Returns:
-        list[list[dict]]: nested list of dicts
-    """
-    roots = []
-    k = 0
-
-    def get_children(theme_dicts: list, i):
-        i = i+1
-
-        # print(i, 'roots', roots, 'theme_ids', theme_dicts)
-        try:
-            if len(theme_dicts) == 0 and i == 1:
-                # print('in int if', theme_dicts)
-                child_themes = Themes.objects.filter(parent_id=0)
-                for child_theme in child_themes:
-                    theme_dicts.append([child_theme.get_as_dict()])
-                get_children(theme_dicts, i)
-                # children_ids.append([child_theme.theme_id])
-            else:
-                for idx, theme_dict in enumerate(theme_dicts):
-                    # print('in list if, idx = ', idx, 'theme_dict ', theme_dict)
-                    child_themes = Themes.objects.filter(
-                        parent_id=theme_dicts[idx][0]['theme_id'])
-
-                    for child_theme in child_themes:
-                        theme_dicts[idx].append([child_theme.get_as_dict()])
-                    get_children(theme_dicts[idx][1:], i)
-                    # children_ids.append(child_theme.theme_id)
-
-        except Exception as e:
-            print(e.args, "get_children not getting children")
-
-    get_children(roots, k)
-    return roots
-
-
 def get_theme_dicts_as_json_string():
     """
     returns entire tree of themes as json string
@@ -61,7 +21,6 @@ def get_theme_dicts_as_json_string():
     Returns:
         list[list[dict]]: nested list of dicts
     """
-
 
     roots = {'nested': []}
     all_theme = Themes.objects.filter(theme_id=0)[0]
@@ -143,3 +102,22 @@ def get_questions(theme_id: int) -> list[dict]:
         questions.append(theme_dict)
 
     return questions
+
+
+def get_theme_by_id(idx: int) -> dict:
+    theme = Themes.objects.get(theme_id=idx)
+    theme_dict = theme.get_as_dict()
+    return theme_dict
+
+
+def write_new_question(theme_id: int, new_question: str, new_answer: str) -> None:
+    """add new question entry to the database
+    Args:
+        theme_id (int): 
+        new_question (str): 
+        new_answer (str): 
+    """
+    
+    q = Questions(question=new_question, answer=new_answer, theme_id=theme_id)
+    q.save()
+    print(q)

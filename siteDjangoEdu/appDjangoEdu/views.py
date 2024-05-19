@@ -54,11 +54,60 @@ def take_test(request, s):
 
 def add_question_submit(request):
     if request.method == 'POST':
-        return redirect("appDjangoEdu:add_question")
+        try:
+            (request.POST['inputQuestion'])
+        except Exception as e:
+            print('lolll')
+            sIdx = []
+            for item in request.POST:
+                print(item, request.POST[item])
+                sIdx.append(item.split('_')[-1])
+            sIdx = sIdx[1]
+            print(sIdx)
+            return redirect("appDjangoEdu:add_question", s = sIdx)
+        else:
+            newQuestion = request.POST['inputQuestion']
+            newAnswer = request.POST['inputAnswer']
+            theme_id = request.POST['theme_id']
+            
+            print(newQuestion, newAnswer)
+            write_new_question(theme_id=theme_id, new_question= newQuestion, new_answer= newAnswer)
+            # for item in request.POST:
+            #     print(item, request.POST[item])
+            # print('yoo')
+            return redirect("appDjangoEdu:add_question", s = str(theme_id))
+            
 
-def add_question(request):
-    context = {
-        'value1': 3,
-        'value2': 4
-    }
-    return render(request, 'appDjangoEdu/add_question.html', context=context)
+        
+
+        # if request.POST['inputQuestion']:
+        #     for item in request.POST:
+        #         print(item, request.POST[item])
+        #     print('yoo')
+        #     theme_id = request.POST['theme_id']
+        #     return redirect("appDjangoEdu:add_question", s = theme_id)
+        # else:
+        #     sIdx = []
+        #     for item in request.POST:
+        #         print(item, request.POST[item])
+        #         sIdx.append(item.split('_')[-1])
+        #     sIdx = sIdx[1]
+        #     print(sIdx)
+        #     return redirect("appDjangoEdu:add_question", s = sIdx)
+
+def add_question(request, s):
+    if s == 'inputQuestion':
+        context = {
+            'questions': []
+        }
+        return render(request, 'appDjangoEdu/add_question.html', context=context)
+    else:
+        theme_idx = int(s)
+        theme = get_theme_by_id(theme_idx)
+        theme_questions = get_questions(theme_idx)
+
+        context = {
+            'theme' : theme, 
+            'questions' : theme_questions
+        }
+        return render(request, 'appDjangoEdu/add_question.html', context=context)

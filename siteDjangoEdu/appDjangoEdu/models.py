@@ -36,4 +36,13 @@ class Themes(models.Model):
         questions = Questions.objects.filter(theme_id = self.theme_id)
         count = len(questions)
         return count
+    
+    def get_question_dicts(self):
+        q_list = []
+        questions = Questions.objects.filter(theme_id = self.theme_id)
+        for question in questions:
+            q_list.append(question.get_as_dict())
+        return q_list
+
+        
 
